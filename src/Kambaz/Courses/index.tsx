@@ -1,10 +1,16 @@
-import CourseNavigation from "./Navigation";
-import Modules from "./Modules";
 import { Navigate, Route, Routes } from "react-router";
 import { useLocation } from "react-router-dom";
+
+import CourseNavigation from "./Navigation";
 import Home from "./Home";
+import Modules from "./Modules";
+import Piazza from "./Piazza";
+import Zoom from "./Zoom";
 import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
+import Quizzes from "./Quizzes";
+import Grades from "./Grades";
+import People from "./People";
 
 export default function Courses() {
     const location = useLocation();
@@ -24,9 +30,13 @@ export default function Courses() {
                 <Route path="/" element={<Navigate to="Home" />} />
                 <Route path="Home" element={<Home />} />
                 <Route path="Modules" element={<Modules />} />
+                <Route path="Piazza" element={<Piazza />} />
+                <Route path="Zoom" element={<Zoom />} />
                 <Route path="Assignments" element={<Assignments />} />
                 <Route path="Assignments/:aid" element={<AssignmentEditor />} />
-                <Route path="People" element={<h2>People</h2>} />
+                <Route path="Quizzes" element={<Quizzes />} />
+                <Route path="Grades" element={<Grades />} />
+                <Route path="People" element={<People />} />
                 </Routes>
                 {isAssignmentEditor && (
                     <><hr />
