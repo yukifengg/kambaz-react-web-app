@@ -1,0 +1,83 @@
+[
+    { 
+      "_id": "A101", 
+      "title": "Propulsion Assignment", 
+      "course": "RS101",
+      "availableDate": "2025-05-06T00:00:00",
+      "dueDate": "2025-05-13T23:59:00",
+      "points": 100,
+      "description": "Analyze propulsion systems and discuss their application in modern rocketry."
+    },
+    { 
+      "_id": "A102", 
+      "title": "Combustion Analysis", 
+      "course": "RS101",
+      "availableDate": "2025-05-09T00:00:00",
+      "dueDate": "2025-05-16T23:59:00",
+      "points": 100,
+      "description": "Conduct combustion analysis for various rocket propellants and document findings."
+    },
+    { 
+      "_id": "A103",
+      "title": "Nozzle Design Project", 
+      "course": "RS101",
+      "availableDate": "2025-05-12T00:00:00",
+      "dueDate": "2025-05-21T23:59:00",
+      "points": 100,
+      "description": "Design a rocket nozzle and justify choices based on performance metrics."
+    },
+    { 
+      "_id": "A201", 
+      "title": "Aerodynamics Quiz", 
+      "course": "RS102",
+      "availableDate": "2025-05-16T00:00:00",
+      "dueDate": "2025-05-26T23:59:00",
+      "points": 100,
+      "description": "Quiz on fundamental aerodynamic principles and their application in flight."
+    },
+    { 
+      "_id": "A202", 
+      "title": "Flow Analysis", 
+      "course": "RS102",
+      "availableDate": "2025-05-21T00:00:00",
+      "dueDate": "2025-05-30T23:59:00",
+      "points": 100,
+      "description": "Analyze fluid flow through various aerospace structures and report findings."
+    },
+    { 
+      "_id": "A203", 
+      "title": "Heating Analysis", 
+      "course": "RS102",
+      "availableDate": "2025-05-23T00:00:00",
+      "dueDate": "2025-06-02T23:59:00",
+      "points": 100,
+      "description": "Perform thermal analysis on aerospace components under varying heat conditions."
+    },
+    { 
+      "_id": "A301", 
+      "title": "Structural Design Task", 
+      "course": "RS103",
+      "availableDate": "2025-05-25T00:00:00",
+      "dueDate": "2025-06-05T23:59:00",
+      "points": 100,
+      "description": "Design and analyze structural components for spacecraft load-bearing systems."
+    },
+    { 
+      "_id": "A302", 
+      "title": "Orbital Calculations", 
+      "course": "RS103",
+      "availableDate": "2025-05-29T00:00:00",
+      "dueDate": "2025-06-10T23:59:00",
+      "points": 100,
+      "description": "Calculate orbital parameters and transfer maneuvers for space missions."
+    },
+    { 
+      "_id": "A303", 
+      "title": "Systems Engineering Exam", 
+      "course": "RS103",
+      "availableDate": "2025-06-01T00:00:00",
+      "dueDate": "2025-06-15T23:59:00",
+      "points": 100,
+      "description": "Final exam on systems engineering practices and spacecraft design integration."
+    }
+  ]
