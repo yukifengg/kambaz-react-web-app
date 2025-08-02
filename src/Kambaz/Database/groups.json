@@ -1,0 +1,57 @@
+[
+    {
+      "_id": "G1",
+      "course": "RS101",
+      "name": "Assignments",
+      "weight": 40
+    },
+    {
+      "_id": "G2",
+      "course": "RS101",
+      "name": "Quizzes",
+      "weight": 20
+    },
+    {
+      "_id": "G3",
+      "course": "RS101",
+      "name": "Exams",
+      "weight": 40
+    },
+    {
+      "_id": "G4",
+      "course": "RS102",
+      "name": "Assignments",
+      "weight": 40
+    },
+    {
+      "_id": "G5",
+      "course": "RS102",
+      "name": "Quizzes",
+      "weight": 30
+    },
+    {
+      "_id": "G6",
+      "course": "RS102",
+      "name": "Exams",
+      "weight": 30
+    },
+    {
+      "_id": "G7",
+      "course": "RS103",
+      "name": "Assignments",
+      "weight": 40
+    },
+    {
+      "_id": "G8",
+      "course": "RS103",
+      "name": "Quizzes",
+      "weight": 20
+    },
+    {
+      "_id": "G9",
+      "course": "RS103",
+      "name": "Exams",
+      "weight": 40
+    }
+  ]
+  

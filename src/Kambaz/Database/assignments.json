@@ -1,7 +1,8 @@
 [
     { 
       "_id": "A101", 
-      "title": "Propulsion Assignment", 
+      "group_id": "G1",
+      "name": "Propulsion Assignment", 
       "course": "RS101",
       "availableDate": "2025-05-06T00:00:00",
       "dueDate": "2025-05-13T23:59:00",
@@ -9,8 +10,9 @@
       "description": "Analyze propulsion systems and discuss their application in modern rocketry."
     },
     { 
-      "_id": "A102", 
-      "title": "Combustion Analysis", 
+      "_id": "A102",
+      "group_id": "G1",
+      "name": "Combustion Analysis", 
       "course": "RS101",
       "availableDate": "2025-05-09T00:00:00",
       "dueDate": "2025-05-16T23:59:00",
@@ -19,7 +21,8 @@
     },
     { 
       "_id": "A103",
-      "title": "Nozzle Design Project", 
+      "group_id": "G1",
+      "name": "Nozzle Design Project", 
       "course": "RS101",
       "availableDate": "2025-05-12T00:00:00",
       "dueDate": "2025-05-21T23:59:00",
@@ -28,7 +31,8 @@
     },
     { 
       "_id": "A201", 
-      "title": "Aerodynamics Quiz", 
+      "group_id": "G2",
+      "name": "Aerodynamics Quiz", 
       "course": "RS102",
       "availableDate": "2025-05-16T00:00:00",
       "dueDate": "2025-05-26T23:59:00",
@@ -37,7 +41,8 @@
     },
     { 
       "_id": "A202", 
-      "title": "Flow Analysis", 
+      "group_id": "G2",
+      "name": "Flow Analysis", 
       "course": "RS102",
       "availableDate": "2025-05-21T00:00:00",
       "dueDate": "2025-05-30T23:59:00",
@@ -46,7 +51,8 @@
     },
     { 
       "_id": "A203", 
-      "title": "Heating Analysis", 
+      "group_id": "G2",
+      "name": "Heating Analysis", 
       "course": "RS102",
       "availableDate": "2025-05-23T00:00:00",
       "dueDate": "2025-06-02T23:59:00",
@@ -55,7 +61,8 @@
     },
     { 
       "_id": "A301", 
-      "title": "Structural Design Task", 
+      "group_id": "G3",
+      "name": "Structural Design Task", 
       "course": "RS103",
       "availableDate": "2025-05-25T00:00:00",
       "dueDate": "2025-06-05T23:59:00",
@@ -64,7 +71,8 @@
     },
     { 
       "_id": "A302", 
-      "title": "Orbital Calculations", 
+      "group_id": "G3",
+      "name": "Orbital Calculations", 
       "course": "RS103",
       "availableDate": "2025-05-29T00:00:00",
       "dueDate": "2025-06-10T23:59:00",
@@ -73,7 +81,8 @@
     },
     { 
       "_id": "A303", 
-      "title": "Systems Engineering Exam", 
+      "group_id": "G3",
+      "name": "Systems Engineering Exam", 
       "course": "RS103",
       "availableDate": "2025-06-01T00:00:00",
       "dueDate": "2025-06-15T23:59:00",

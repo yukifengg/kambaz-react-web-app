@@ -1,26 +1,33 @@
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function AccountNavigation() {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const { pathname } = useLocation();
+
+  const links = currentUser
+    ? [{ name: "Profile", path: "/Kambaz/Account/Profile" }]
+    : [
+        { name: "Signin", path: "/Kambaz/Account/Signin" },
+        { name: "Signup", path: "/Kambaz/Account/Signup" }
+      ];
+
   return (
     <div id="wd-account-navigation" className="wd list-group fs-5 rounded-0">
-      <NavLink to="/Kambaz/Account/Signin"
-        className={({ isActive }) =>
-          `list-group-item border-0 ${isActive ? "active text-danger" : "text-danger"}`
-        }>
-        Signin
-      </NavLink>
-      <NavLink to="/Kambaz/Account/Signup"
-        className={({ isActive }) =>
-          `list-group-item border-0 ${isActive ? "active text-danger" : "text-danger"}`
-        }>
-        Signup
-      </NavLink>
-      <NavLink to="/Kambaz/Account/Profile"
-        className={({ isActive }) =>
-          `list-group-item border-0 ${isActive ? "active text-danger" : "text-danger"}`
-        }>
-        Profile
-      </NavLink>
+      {links.map((link) => {
+        const isActive = pathname === link.path;
+        return (
+          <Link
+            key={link.name}
+            to={link.path}
+            className={`list-group-item border-0 text-danger ${
+              isActive ? "active" : ""
+            }`}
+          >
+            {link.name}
+          </Link>
+        );
+      })}
     </div>
   );
 }

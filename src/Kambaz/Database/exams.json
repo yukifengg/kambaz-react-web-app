@@ -1,0 +1,13 @@
+[
+    { 
+        "_id": "E303", 
+        "group_id": "G3",
+        "name": "Systems Engineering Exam", 
+        "course": "RS103",
+        "availableDate": "2025-06-01T00:00:00",
+        "dueDate": "2025-06-15T23:59:00",
+        "points": 100, 
+        "description": "Final exam on systems engineering practices and spacecraft design integration." 
+    }
+  ]
+  

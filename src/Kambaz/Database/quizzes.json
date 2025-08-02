@@ -1,0 +1,23 @@
+[
+    { 
+        "_id": "Q201",
+        "group_id": "G2",
+        "name": "Aerodynamics Quiz", 
+        "course": "RS102",
+        "availableDate": "2025-05-16T00:00:00", 
+        "dueDate": "2025-05-26T23:59:00",
+        "points": 100, 
+        "description": "Quiz on fundamental aerodynamic principles and their application in flight." 
+    },
+    { 
+        "_id": "Q302", 
+        "group_id": "G3",
+        "name": "Orbital Calculations", 
+        "course": "RS103",
+        "availableDate": "2025-05-29T00:00:00", 
+        "dueDate": "2025-06-10T23:59:00",
+        "points": 100, 
+        "description": "Calculate orbital parameters and transfer maneuvers for space missions." 
+    }
+  ]
+  
