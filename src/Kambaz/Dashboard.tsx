@@ -155,17 +155,18 @@ export default function Dashboard() {
                 </Link>
 
                 <div className="p-2 d-flex justify-content-center">
-                  <Button
-                    variant={isEnrolled ? "danger" : "success"}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleEnrollment(c._id, isEnrolled);
-                    }}
-                  >
-                    {isEnrolled ? "Unenroll" : "Enroll"}
-                  </Button>
-                </div>
+                <Button
+                  variant={isEnrolled ? "danger" : "success"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleEnrollment(c._id, isEnrolled);
+                  }}
+                >
+                  {isEnrolled ? "Unenroll" : "Enroll"}
+                </Button>
+              </div>
+
               </Card>
             </Col>
           );

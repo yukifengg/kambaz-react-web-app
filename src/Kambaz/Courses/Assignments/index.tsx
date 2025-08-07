@@ -18,6 +18,9 @@ import {
   updateAssignment,
 } from "./reducer";
 
+// **Add this import for your API client**
+import * as assignmentsClient from "./client";  // <-- your axios client wrapper
+
 function formatDateTime(dateString: string): string {
   if (!dateString) return "";
   const options: Intl.DateTimeFormatOptions = {
@@ -49,6 +52,9 @@ export default function Assignments() {
 
   // Filter groups by course
   const courseGroups = groups.filter((g: any) => g.course === cid);
+
+  // You can now use assignmentsClient here or in your dispatch thunks, e.g.:
+  // assignmentsClient.createAssignmentForCourse(cid!, { ... })
 
   return (
     <div id="wd-assignments" className="p-3">
@@ -182,4 +188,3 @@ export default function Assignments() {
     </div>
   );
 }
-
