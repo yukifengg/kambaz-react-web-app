@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Row, Col, Card, Button, FormControl } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { setCourse } from "./Courses/reducer";
 import { enroll, unenroll } from "./Enrollments/reducer";
 
@@ -22,21 +22,17 @@ export default function Dashboard({
 }) {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const { course } = useSelector((state: any) => state.coursesReducer);
+  const { course, courses: allCourses } = useSelector(
+    (state: any) => state.coursesReducer
+  );
+
+  const enrolledCourseIds =
+    useSelector(
+      (state: any) => state.enrollmentsReducer[currentUser._id]
+    ) || [];
 
   const isFaculty = currentUser?.role === "FACULTY";
   const [showAll, setShowAll] = useState(false);
-  const allCourses = useSelector((state: any) => state.coursesReducer.courses);
-
-  // NEW: keep track of enrolled courses IDs separately
-  const [enrolledCourseIds, setEnrolledCourseIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (!showAll) {
-      // When showing enrolled only, update enrolledCourseIds from courses prop
-      setEnrolledCourseIds(courses.map((c) => c._id));
-    }
-  }, [courses, showAll]);
 
   const toggleShowAll = () => {
     if (!showAll) {
@@ -54,6 +50,12 @@ export default function Dashboard({
       dispatch(unenroll({ userId: currentUser._id, courseId }));
     } else {
       dispatch(enroll({ userId: currentUser._id, courseId }));
+    }
+  
+    if (showAll) {
+      findAllCourses();   // reloads all courses
+    } else {
+      fetchCourses();     // reloads enrolled-only courses
     }
   };
   
@@ -127,7 +129,6 @@ export default function Dashboard({
 
       <Row xs={1} md={5} className="g-4">
         {displayedCourses.map((c: any) => {
-          // Use the enrolledCourseIds array to determine enrollment
           const isEnrolled = enrolledCourseIds.includes(c._id);
 
           return (
