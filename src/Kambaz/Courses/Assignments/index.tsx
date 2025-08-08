@@ -18,8 +18,7 @@ import {
   updateAssignment,
 } from "./reducer";
 
-// **Add this import for your API client**
-import * as assignmentsClient from "./client";  // <-- your axios client wrapper
+// import * as assignmentsClient from "./client";
 
 function formatDateTime(dateString: string): string {
   if (!dateString) return "";
