@@ -32,7 +32,7 @@ export default function Dashboard({
   );
   const allCourses = courses;
 
-  const [showAll, setShowAll] = useState(false);
+  const [showAll] = useState(false);
 
   const displayedCourses = showAll ? allCourses : enrolledCourses;
 
