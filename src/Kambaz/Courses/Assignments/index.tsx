@@ -18,7 +18,6 @@ import {
   updateAssignment,
 } from "./reducer";
 
-// import * as assignmentsClient from "./client";
 
 function formatDateTime(dateString: string): string {
   if (!dateString) return "";

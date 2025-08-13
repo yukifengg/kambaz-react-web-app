@@ -30,3 +30,11 @@ export const unenrollUser = async (userId: string, courseId: string) => {
     { withCredentials: true }
   );
 };
+
+export const findUsersForCourse = async (courseId: string) => {
+  const response = await axios.get(
+    `${ENROLLMENTS_API}/course/${courseId}/users?ts=${Date.now()}`,
+    { withCredentials: true }
+  );
+  return response.data;
+};

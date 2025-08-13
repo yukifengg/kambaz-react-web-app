@@ -1,72 +1,51 @@
 import { Link } from "react-router-dom";
-import { Row, Col, Card, Button, FormControl } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import { Row, Col, Card, FormControl } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { useState } from "react";
-import { setCourse } from "./Courses/reducer";
-import { enroll, unenroll } from "./Enrollments/reducer";
 
 export default function Dashboard({
-  enrolledCourses,
-  allCourses,
+  courses,          
+  course,          
+  setCourse,        
   addNewCourse,
   updateCourse,
   deleteCourse,
-  fetchEnrolledCourses,
-  findAllCourses,
+  enrolling,
+  setEnrolling,
+  updateEnrollment
 }: {
-  enrolledCourses: any[];
-  allCourses: any[];
+  courses: any[];
+  course: any;
+  setCourse: (course: any) => void;
   addNewCourse: (newCourseData: any) => Promise<void>;
   updateCourse: (updatedCourse: any) => Promise<void>;
   deleteCourse: (id: string) => Promise<void>;
-  fetchEnrolledCourses: () => Promise<void>;
-  findAllCourses: () => Promise<void>;
+  enrolling: boolean;
+  setEnrolling: (value: boolean) => void;
+  updateEnrollment: (courseId: string, enrolled: boolean) => void
 }) {
-  const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const { course } = useSelector((state: any) => state.coursesReducer);
-
   const isFaculty = currentUser?.role === "FACULTY";
+
+  const enrolledCourses = courses.filter((c) =>
+    c.enrolled
+  );
+  const allCourses = courses;
+
   const [showAll, setShowAll] = useState(false);
 
-  const toggleShowAll = () => {
-    setShowAll((prev) => {
-      const newShowAll = !prev;
-      if (newShowAll) {
-        findAllCourses();
-      } else {
-        fetchEnrolledCourses();
-      }
-      return newShowAll;
-    });
-  };
-
   const displayedCourses = showAll ? allCourses : enrolledCourses;
-
-  const toggleEnrollment = async (courseId: string, isEnrolled: boolean) => {
-    if (isEnrolled) {
-      await dispatch(unenroll({ userId: currentUser._id, courseId }));
-    } else {
-      await dispatch(enroll({ userId: currentUser._id, courseId }));
-    }
-  
-    // Always refresh both lists
-    await fetchEnrolledCourses();
-    await findAllCourses();
-  };
-  
 
   return (
     <div id="wd-dashboard" className="p-4">
       <h1 className="d-flex justify-content-between">
         Dashboard
-        <Button
-          variant="primary"
-          onClick={toggleShowAll}
-          id="wd-enrollments-toggle"
+        <button
+          onClick={() => setEnrolling(!enrolling)}
+          className="float-end btn btn-primary"
         >
-          {showAll ? "Show Enrolled Only" : "Show All Courses"}
-        </Button>
+          {enrolling ? "My Courses" : "All Courses"}
+        </button>
       </h1>
       <hr />
 
@@ -91,18 +70,16 @@ export default function Dashboard({
           </h5>
           <br />
           <FormControl
-            value={course.name}
+            value={course.name || ""}
             className="mb-2"
-            onChange={(e) =>
-              dispatch(setCourse({ ...course, name: e.target.value }))
-            }
+            onChange={(e) => setCourse({ ...course, name: e.target.value })}
           />
           <FormControl
             as="textarea"
             rows={3}
-            value={course.description}
+            value={course.description || ""}
             onChange={(e) =>
-              dispatch(setCourse({ ...course, description: e.target.value }))
+              setCourse({ ...course, description: e.target.value })
             }
           />
           <hr />
@@ -118,9 +95,7 @@ export default function Dashboard({
 
       <Row xs={1} md={5} className="g-4">
         {displayedCourses.map((courseItem: any) => {
-          const isEnrolled = enrolledCourses.some(
-            (ec) => ec._id === courseItem._id
-          );
+          const isEnrolled = courseItem.enrolled === true;
 
           return (
             <Col key={courseItem._id} style={{ width: "300px" }}>
@@ -149,8 +124,7 @@ export default function Dashboard({
                   <Card.Body>
                     <Card.Title>{courseItem.name}</Card.Title>
                     <Card.Text>
-                      {courseItem.description ||
-                        "No description available."}
+                      {courseItem.description || "No description available."}
                     </Card.Text>
 
                     {isFaculty && (
@@ -169,7 +143,7 @@ export default function Dashboard({
                           id="wd-edit-course-click"
                           onClick={(event) => {
                             event.preventDefault();
-                            dispatch(setCourse(courseItem));
+                            setCourse(courseItem);
                           }}
                           className="btn btn-warning me-2 float-end"
                         >
@@ -181,16 +155,19 @@ export default function Dashboard({
                 </Link>
 
                 <div className="p-2 d-flex justify-content-center">
-                  <Button
-                    variant={isEnrolled ? "danger" : "success"}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleEnrollment(courseItem._id, isEnrolled);
-                    }}
-                  >
-                    {isEnrolled ? "Unenroll" : "Enroll"}
-                  </Button>
+                  {enrolling && (
+                    <button
+                      className={`btn ${
+                        isEnrolled ? "btn-danger" : "btn-success"
+                      }`}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        updateEnrollment(course._id, !course.enrolled);
+                      }}
+                    >
+                      {isEnrolled ? "Unenroll" : "Enroll"}
+                    </button>
+                  )}
                 </div>
               </Card>
             </Col>
