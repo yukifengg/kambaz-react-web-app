@@ -12,13 +12,23 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 export default function Kambaz() {
-  const [courses, setCourses] = useState<any[]>([]);
+  const [enrolledCourses, setEnrolledCourses] = useState<any[]>([]);
+  const [allCourses, setAllCourses] = useState<any[]>([]);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
 
-  const fetchCourses = async () => {
+  const fetchEnrolledCourses = async () => {
     try {
       const myCourses = await userClient.findMyCourses();
-      setCourses(myCourses);
+      setEnrolledCourses(myCourses);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const findAllCourses = async () => {
+    try {
+      const all = await courseClient.fetchAllCourses();
+      setAllCourses(all);
     } catch (error) {
       console.error(error);
     }
@@ -26,31 +36,36 @@ export default function Kambaz() {
 
   useEffect(() => {
     if (currentUser) {
-      fetchCourses();
+      fetchEnrolledCourses();
+      findAllCourses();
     } else {
-      setCourses([]); // clear when logged out
+      setEnrolledCourses([]);
+      setAllCourses([]);
     }
   }, [currentUser]);
 
   const addNewCourse = async (newCourseData: any) => {
     const newCourse = await userClient.createCourse(newCourseData);
-    setCourses([...courses, newCourse]);
-  };
-
-  const findAllCourses = async () => {
-    const allCourses = await courseClient.fetchAllCourses();
-    setCourses(allCourses);
+    setEnrolledCourses([...enrolledCourses, newCourse]);
   };
 
   const deleteCourse = async (courseId: string) => {
     await courseClient.deleteCourse(courseId);
-    setCourses(courses.filter((c) => c._id !== courseId));
+    setEnrolledCourses(enrolledCourses.filter((c) => c._id !== courseId));
+    setAllCourses(allCourses.filter((c) => c._id !== courseId));
   };
 
   const updateCourse = async (updatedCourse: any) => {
     await courseClient.updateCourse(updatedCourse);
-    setCourses(
-      courses.map((c) => (c._id === updatedCourse._id ? updatedCourse : c))
+    setEnrolledCourses(
+      enrolledCourses.map((c) =>
+        c._id === updatedCourse._id ? updatedCourse : c
+      )
+    );
+    setAllCourses(
+      allCourses.map((c) =>
+        c._id === updatedCourse._id ? updatedCourse : c
+      )
     );
   };
 
@@ -68,11 +83,12 @@ export default function Kambaz() {
               element={
                 <ProtectedRoute>
                   <Dashboard
-                    courses={courses}
+                    enrolledCourses={enrolledCourses}
+                    allCourses={allCourses}
                     addNewCourse={addNewCourse}
                     updateCourse={updateCourse}
                     deleteCourse={deleteCourse}
-                    fetchCourses={fetchCourses}
+                    fetchEnrolledCourses={fetchEnrolledCourses}
                     findAllCourses={findAllCourses}
                   />
                 </ProtectedRoute>
@@ -83,9 +99,7 @@ export default function Kambaz() {
               path="Courses/:cid/*"
               element={
                 <ProtectedRoute>
-                  <Courses
-                    courses={courses}
-                  />
+                  <Courses enrolledCourses={enrolledCourses} />
                 </ProtectedRoute>
               }
             />

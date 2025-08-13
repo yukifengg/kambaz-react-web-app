@@ -5,6 +5,7 @@ import Profile from "./Profile";
 import Signin from "./Signin";
 import Signup from "./Signup";
 import AccountNavigation from "./Navigation";
+import Users from "./Users";
 
 export default function Account() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
@@ -19,35 +20,12 @@ export default function Account() {
             </td>
             <td valign="top">
               <Routes>
-                {/* Redirect root based on login state */}
-                <Route
-                  path="/"
-                  element={
-                    <Navigate
-                      to={
-                        currentUser
-                          ? "/Kambaz/Account/Profile"
-                          : "/Kambaz/Account/Signin"
-                      }
-                    />
-                  }
-                />
-
-                {/* Signin/Signup always accessible */}
+                <Route path="/" element={ <Navigate to={currentUser ? "/Kambaz/Account/Profile" : "/Kambaz/Account/Signin" } /> } />
                 <Route path="/Signin" element={<Signin />} />
+                <Route path="/Profile" element={<Profile />} />
                 <Route path="/Signup" element={<Signup />} />
-
-                {/* Profile only accessible if signed in */}
-                <Route
-                  path="/Profile"
-                  element={
-                    currentUser ? (
-                      <Profile />
-                    ) : (
-                      <Navigate to="/Kambaz/Account/Signin" />
-                    )
-                  }
-                />
+                <Route path="/Users" element={<Users />} />
+                <Route path="/Users/:uid" element={<Users />} />
               </Routes>
             </td>
           </tr>
