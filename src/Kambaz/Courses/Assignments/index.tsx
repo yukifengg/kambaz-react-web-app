@@ -48,11 +48,7 @@ export default function Assignments() {
 
   const isFaculty = currentUser?.role === "FACULTY";
 
-  // Filter groups by course
   const courseGroups = groups.filter((g: any) => g.course === cid);
-
-  // You can now use assignmentsClient here or in your dispatch thunks, e.g.:
-  // assignmentsClient.createAssignmentForCourse(cid!, { ... })
 
   return (
     <div id="wd-assignments" className="p-3">

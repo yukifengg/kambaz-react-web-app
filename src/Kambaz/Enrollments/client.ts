@@ -4,17 +4,19 @@ export const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
 export const USERS_API = `${REMOTE_SERVER}/api/users`;
 export const ENROLLMENTS_API = `${REMOTE_SERVER}/api/enrollments`;
 
-// Get all enrollments for a user
-export const findEnrollmentsByUser = async (userId: string) => {
-  const response = await axios.get(
-    `${USERS_API}/${userId}/enrollments?ts=${Date.now()}`,
-    { withCredentials: true }
-  );
+export interface Enrollment {
+  _id: string;
+  user_id: string;
+  course: string;
+  enrolled: boolean;
+}
+
+export const findEnrollmentsByUser = async (userId: string): Promise<Enrollment[]> => {
+  const response = await axios.get(`${USERS_API}/${userId}/enrollments`);
   return response.data;
 };
 
-// Enroll a user in a course
-export const enrollUserInCourse = async (userId: string, courseId: string) => {
+export const enrollUserInCourse = async (userId: string, courseId: string): Promise<Enrollment> => {
   const response = await axios.post(
     `${USERS_API}/${userId}/enrollments/${courseId}`,
     {},
@@ -23,18 +25,21 @@ export const enrollUserInCourse = async (userId: string, courseId: string) => {
   return response.data;
 };
 
-// Unenroll a user by enrollment ID
-export const unenrollUser = async (userId: string, courseId: string) => {
+export const unenrollUserFromCourse = async (userId: string, courseId: string): Promise<void> => {
   await axios.delete(
-    `${USERS_API}/${userId}/enrollments/${courseId}?ts=${Date.now()}`, // avoid cache
+    `${USERS_API}/${userId}/enrollments/${courseId}`,
     { withCredentials: true }
   );
 };
 
-export const findUsersForCourse = async (courseId: string) => {
-  const response = await axios.get(
-    `${ENROLLMENTS_API}/course/${courseId}/users?ts=${Date.now()}`,
-    { withCredentials: true }
-  );
-  return response.data;
+export const updateEnrollment = async (
+  userId: string,
+  courseId: string,
+  enrolled: boolean
+): Promise<void> => {
+  if (enrolled) {
+    await enrollUserInCourse(userId, courseId);
+  } else {
+    await unenrollUserFromCourse(userId, courseId);
+  }
 };

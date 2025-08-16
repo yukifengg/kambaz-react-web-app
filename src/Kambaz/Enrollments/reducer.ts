@@ -2,18 +2,28 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { enrollments as dbEnrollments } from "../Database";
 
+interface Enrollment {
+  _id: string;
+  course: string;
+  user_id: string;
+  grade?: number;
+  letterGrade?: string;
+  enrollmentDate: string;
+  status: string;
+}
+
 interface EnrollmentState {
   [userId: string]: string[];
 }
 
 const initialState: EnrollmentState = {};
-dbEnrollments.forEach((e) => {
-  if (!initialState[e.user]) initialState[e.user] = [];
-  initialState[e.user].push(e.course);
+dbEnrollments.forEach((e: Enrollment) => {
+  if (!initialState[e.user_id]) initialState[e.user_id] = [];
+  initialState[e.user_id].push(e.course);
 });
 
 const enrollmentsSlice = createSlice({
-  name: "enrollmentsReducer",
+  name: "enrollments",
   initialState,
   reducers: {
     enroll: (
@@ -22,7 +32,9 @@ const enrollmentsSlice = createSlice({
     ) => {
       const { userId, courseId } = payload;
       if (!state[userId]) state[userId] = [];
-      if (!state[userId].includes(courseId)) state[userId].push(courseId);
+      if (!state[userId].includes(courseId)) {
+        state[userId].push(courseId);
+      }
     },
     unenroll: (
       state,

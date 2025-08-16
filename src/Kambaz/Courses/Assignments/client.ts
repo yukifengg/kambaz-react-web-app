@@ -10,7 +10,6 @@ export interface Assignment {
   title?: string;
   description?: string;
   dueDate?: string;
-  // Add other assignment fields as needed
 }
 
 export const findAssignmentsForCourse = async (courseId: string): Promise<Assignment[]> => {

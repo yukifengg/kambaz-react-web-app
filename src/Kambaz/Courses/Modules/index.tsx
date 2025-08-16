@@ -1,134 +1,122 @@
-import { ListGroup } from "react-bootstrap";
+import ModulesControls from "./ModulesControls";
+import LessonControlButtons from "./LessonControlButtons";
 import { BsGripVertical } from "react-icons/bs";
+import ModuleControlButtons from "./ModuleControlButtons";
 import { useParams } from "react-router";
-import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { setModules, addModule, editModule, updateModule, deleteModule } from "./reducer";
+import { useState, useEffect } from "react";
 import * as coursesClient from "../client";
 import * as modulesClient from "./client";
-import ModulesControls from "./ModulesControls";
-import ModuleControlButtons from "./ModuleControlButtons";
-import LessonControlButtons from "./LessonControlButtons";
-import { setModules, addModule, editModule, updateModule, deleteModule }
-  from "./reducer";
 
 export default function Modules() {
-  const { cid } = useParams();
-  const [moduleName, setModuleName] = useState("");
-  const { modules } = useSelector((state: any) => state.modulesReducer);
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const dispatch = useDispatch();
+    const { cid } = useParams();
+    const [moduleName, setModuleName] = useState("");
+    const { modules } = useSelector((state: any) => state.modulesReducer);
+    const dispatch = useDispatch();
+    const fetchModules = async () => {
+        const modules = await coursesClient.findModulesForCourse(cid as string);
+        dispatch(setModules(modules));
+    };
+    useEffect(() => {
+        fetchModules();
+    }, []);
+    const createModuleForCourse = async () => {
+        if (!cid) return;
+        const newModule = { name: moduleName, course: cid };
+        const module = await coursesClient.createModuleForCourse(cid, newModule);
+        dispatch(addModule(module));
+    };
+    const removeModule = async (moduleId: string) => {
+        await modulesClient.deleteModule(moduleId);
+        dispatch(deleteModule(moduleId));
+    };
 
-  const fetchModulesForCourse = async () => {
-   const modules = await coursesClient.findModulesForCourse(cid!);
-   dispatch(setModules(modules));
- };
- useEffect(() => {
-   fetchModulesForCourse();
- }, [cid]);
-
- const addModuleHandler = async () => {
-   const newModule = await coursesClient.createModuleForCourse(cid!, {
-     name: moduleName,
-     course: cid,
-   });
-   dispatch(addModule(newModule));
-   setModuleName("");
- };
-
- const deleteModuleHandler = async (moduleId: string) => {
-   await modulesClient.deleteModule(moduleId);
-   dispatch(deleteModule(moduleId));
- };
-
- const updateModuleHandler = async (module: any) => {
-   await modulesClient.updateModule(module);
-   dispatch(updateModule(module));
- };
+    const saveModule = async (module: any) => {
+        await modulesClient.updateModule(module);
+        dispatch(updateModule(module));
+    };
 
 
-  const isFaculty = currentUser?.role === "FACULTY";
 
-  const fetchModules = async () => {
-    const modules = await coursesClient.findModulesForCourse(cid as string);
-    dispatch(setModules(modules));
-  };
 
-  useEffect(() => {
-    fetchModules();
-  }, []);
 
-  // const saveModule = async (module: any) => {
-  //   await modulesClient.updateModule(module);
-  //   dispatch(updateModule(module));
-  // }
+    return (
+        <div>
+            <ul id="wd-modules" className="list-group rounded-0">
 
-  return (
-    <div className="wd-modules-container">
+                    <ModulesControls
+                        moduleName={moduleName}
+                        setModuleName={setModuleName}
+                        addModule= {createModuleForCourse} />
+                {modules
+                    .map((module: any) => (
+                        <li key={module._id} className="wd-module list-group-item p-0 m-5 fs-5 border-gray">
+                            <div className="wd-title p-3 ps-2 bg-secondary">
+                                {!module.editing && module.name}
+                                {module.editing && (
+                                    <input
+                                        className="form-control w-50 d-inline-block"
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateModule({ ...module, name: e.target.value })
+                                            )
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter") {
+                                                saveModule({ ...module, editing: false });
+                                            }
+                                        }}
+                                        defaultValue={module.name}
+                                    />
+                                )}
+                                        <ModuleControlButtons
+                                            moduleId={module._id}
+                                            deleteModule={(moduleId) => removeModule(moduleId)}
+                                            editModule={(moduleId) => dispatch(editModule(moduleId))}
+                                        />
 
-      {isFaculty && (
-        <ModulesControls
-        addModule={addModuleHandler}
-        setModuleName={setModuleName} 
-        moduleName={moduleName}
-        />
-      )}
-      
-      <br /><br /><br />
+                                        {/* Course Management Buttons */}
+                                        <button
+                                            className="btn btn-success m-2"
+                                            onClick={() => {/* Publish Module Action */}}
+                                        >
+                                            Publish
+                                        </button>
+                                        <button
+                                            className="btn btn-secondary me-2"
+                                            onClick={() => {/* Unpublish Module Action */}}
+                                        >
+                                            Unpublish
+                                        </button>
+                                        <button
+                                            className="btn btn-info me-2"
+                                            onClick={() => {/* Mark as Important Action */}}
+                                        >
+                                            Important
+                                        </button>
+                                        <button
+                                            className="btn btn-warning me-2"
+                                            onClick={() => {/* Disable Module Action */}}
+                                        >
+                                            Disable
+                                        </button>
+                            </div>
 
-      <ListGroup id="wd-modules" className="rounded-0">
-        {modules
-          // .filter((module: any) => module.course === cid)
-          .map((module: any) => (
-            <ListGroup.Item
-              key={module._id}
-              className="wd-module p-0 mb-5 fs-5 border-gray"
-            >
-              {/* Module Title */}
-              <div className="wd-title p-3 ps-2 bg-secondary d-flex justify-content-between">
-                <div>
-                  <BsGripVertical className="me-2 fs-3" />
-                  {!module.editing && module.name}
-                    {module.editing && (
-                      <input onChange={(e) =>
-                                updateModuleHandler({ ...module, name: e.target.value }) }
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                  updateModuleHandler({ ...module, editing: false });
-                                }
-                              }}
-                              value={module.name}/>
-                      )}
+                            {module.lessons && (
+                                <ul className="wd-lessons list-group rounded-0">
+                                    {module.lessons.map((lesson: any) => (
+                                        <li key={lesson._id} className="wd-lesson list-group-item p-3 ps-1">
+                                            <BsGripVertical className="me-2 fs-3" /> {lesson.name}
 
-                </div>
-                {isFaculty && (
-                  <ModuleControlButtons
-                    moduleId={module._id}
-                    deleteModule={(moduleId) => deleteModuleHandler(moduleId)}
-                    editModule={(moduleId) => dispatch(editModule(moduleId))}
-                  />
-                )}
-              </div>
-
-              {/* Lessons */}
-              {module.lessons && (
-                <ListGroup className="wd-lessons rounded-0">
-                  {module.lessons.map((lesson: any) => (
-                    <ListGroup.Item
-                      key={lesson._id}
-                      className="wd-lesson p-3 ps-1 d-flex justify-content-between align-items-center"
-                    >
-                      <div>
-                        <BsGripVertical className="me-2 fs-3" />
-                        {lesson.name}
-                      </div>
-                      {isFaculty && <LessonControlButtons moduleId = {module._id} id={lesson._id} type={"lesson"} />}
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-              )}
-            </ListGroup.Item>
-          ))}
-      </ListGroup>
-    </div>
-  );
+                                             <LessonControlButtons id={""} type={"assignment"} />
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </li>
+                    ))}
+            </ul>
+        </div>
+    );
 }
